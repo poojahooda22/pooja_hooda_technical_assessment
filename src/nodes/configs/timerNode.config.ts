@@ -6,8 +6,8 @@ const config: NodeConfig = {
   icon: 'Timer',
   category: 'utility',
   handles: [
-    { type: 'target', position: 'left', id: 'trigger', label: 'Trigger', style: { top: '50%' } },
-    { type: 'source', position: 'right', id: 'output', label: 'Output', style: { top: '50%' } },
+    { type: 'target', position: 'left', id: 'trigger', label: 'Trigger', style: { top: '58%' } },
+    { type: 'source', position: 'right', id: 'output', label: 'Output', style: { top: '60%' } },
   ],
   fields: [
     {

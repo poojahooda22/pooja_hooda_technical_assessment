@@ -15,8 +15,8 @@ const config: NodeConfig = {
   category: 'llm',
   handles: [
     { type: 'target', position: 'left', id: 'system', label: 'System', style: { top: '33%' } },
-    { type: 'target', position: 'left', id: 'prompt', label: 'Prompt', style: { top: '58%' } },
-    { type: 'source', position: 'right', id: 'response', label: 'Response', style: { top: '88%' } },
+    { type: 'target', position: 'left', id: 'prompt', label: 'Prompt', style: { top: '55%' } },
+    { type: 'source', position: 'right', id: 'response', label: 'Response', style: { top: '82%' } },
   ],
   fields: [
     { name: 'llmName', type: 'text', label: 'Name', defaultValue: (id: string) => id.replace('llm-', 'llm_') },

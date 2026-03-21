@@ -6,7 +6,7 @@ const config: NodeConfig = {
   icon: 'ArrowLeftFromLine',
   category: 'general',
   handles: [
-    { type: 'target', position: 'left', id: 'value', label: 'Value', style: { top: '40%' } },
+    { type: 'target', position: 'left', id: 'value', label: 'Value', style: { left: '62 %' } },
   ],
   fields: [
     {

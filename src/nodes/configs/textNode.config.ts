@@ -10,7 +10,7 @@ const config: NodeConfig = {
   icon: 'Type',
   category: 'general',
   handles: [
-    { type: 'source', position: 'right', id: 'output', label: 'Output', style: { top: '50%' } },
+    { type: 'source', position: 'right', id: 'output', label: 'Output', style: { top: '40%' } },
   ],
   fields: [
     {

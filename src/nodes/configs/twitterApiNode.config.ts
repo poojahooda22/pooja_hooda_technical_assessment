@@ -6,8 +6,8 @@ const config: NodeConfig = {
   icon: 'Twitter',
   category: 'integration',
   handles: [
-    { type: 'target', position: 'left', id: 'content', label: 'Tweet Content' },
-    { type: 'source', position: 'right', id: 'success', label: 'Success' },
+    { type: 'target', position: 'left', id: 'content', label: 'Tweet Content', style: { top: '54%' } },
+    { type: 'source', position: 'right', id: 'success', label: 'Success', style: { top: '54%' } },
   ],
   fields: [
     { name: 'apiKey', type: 'text', label: 'API Key' },

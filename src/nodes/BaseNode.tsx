@@ -148,40 +148,60 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
 
       {/* Body */}
       <div className="px-3 py-3 flex flex-col gap-3">
-        {(config as NodeConfig & { renderContent?: React.ComponentType<{ id: string; data: Record<string, unknown>; fieldValues: Record<string, unknown>; handleFieldChange: (fieldName: string, value: unknown) => void }> }).renderContent
-          ? (() => {
-              const ContentComponent = (config as NodeConfig & { renderContent: React.ComponentType<{ id: string; data: Record<string, unknown>; fieldValues: Record<string, unknown>; handleFieldChange: (fieldName: string, value: unknown) => void }> }).renderContent;
-              return <ContentComponent id={id} data={data} fieldValues={fieldValues} handleFieldChange={handleFieldChange} />;
-            })()
-          : config.fields?.map((field) => (
-              <FieldRenderer
-                key={field.name}
-                field={field}
-                value={(fieldValues[field.name] ?? '') as string | number}
-                onChange={handleFieldChange}
-                nodeId={id}
-              />
-            ))
-        }
+        {config.fields?.map((field) => (
+          <FieldRenderer
+            key={field.name}
+            field={field}
+            value={(fieldValues[field.name] ?? '') as string | number}
+            onChange={handleFieldChange}
+            nodeId={id}
+          />
+        ))}
       </div>
 
       {/* Static handles — hollow stroke when disconnected, solid fill when connected */}
       {config.handles?.map((handle) => {
         const handleId = `${id}-${handle.id}`;
         const connected = connectedHandleIds.has(handleId);
+
+        // Compute label position based on handle side
+        const labelStyle: React.CSSProperties = (() => {
+          switch (handle.position) {
+            case 'left':
+              return { left: 14, top: handle.style?.top ?? '50%', transform: 'translateY(-50%)' };
+            case 'right':
+              return { right: 14, top: handle.style?.top ?? '50%', transform: 'translateY(-50%)' };
+            case 'bottom':
+              return { bottom: 14, left: handle.style?.left ?? '50%', transform: 'translateX(-50%)' };
+            case 'top':
+              return { top: 14, left: handle.style?.left ?? '50%', transform: 'translateX(-50%)' };
+            default:
+              return { left: 14, top: '50%', transform: 'translateY(-50%)' };
+          }
+        })();
+
         return (
-          <Handle
-            key={handle.id}
-            type={handle.type}
-            position={POSITION_MAP[handle.position] || Position.Left}
-            id={handleId}
-            className="!w-2 !h-2 !rounded-full"
-            style={{
-              ...handle.style,
-              background: connected ? 'var(--rare-brand-600)' : 'var(--rare-bg)',
-              border: connected ? 'none' : '1.5px solid var(--rare-brand-500)',
-            }}
-          />
+          <React.Fragment key={handle.id}>
+            <Handle
+              type={handle.type}
+              position={POSITION_MAP[handle.position] || Position.Left}
+              id={handleId}
+              className="!w-2 !h-2 !rounded-full"
+              style={{
+                ...handle.style,
+                background: connected ? 'var(--rare-brand-600)' : 'var(--rare-bg)',
+                border: connected ? 'none' : '1.5px solid var(--rare-brand-500)',
+              }}
+            />
+            {handle.label && (
+              <span
+                className="absolute text-[8px] text-foreground-muted font-medium pointer-events-none whitespace-nowrap"
+                style={labelStyle}
+              >
+                {handle.label}
+              </span>
+            )}
+          </React.Fragment>
         );
       })}
 
@@ -189,18 +209,31 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
       {dynamicHandles.map((handle) => {
         const connected = connectedHandleIds.has(handle.id);
         return (
-          <Handle
-            key={handle.id}
-            type={handle.type}
-            position={POSITION_MAP[handle.position] || Position.Left}
-            id={handle.id}
-            className="!w-2 !h-2 !rounded-full"
-            style={{
-              top: `${handle.top}px`,
-              background: connected ? 'var(--rare-brand-600)' : 'var(--rare-bg)',
-              border: connected ? 'none' : '1.5px solid var(--rare-brand-500)',
-            }}
-          />
+          <React.Fragment key={handle.id}>
+            <Handle
+              type={handle.type}
+              position={POSITION_MAP[handle.position] || Position.Left}
+              id={handle.id}
+              className="!w-2 !h-2 !rounded-full"
+              style={{
+                top: `${handle.top}px`,
+                background: connected ? 'var(--rare-brand-600)' : 'var(--rare-bg)',
+                border: connected ? 'none' : '1.5px solid var(--rare-brand-500)',
+              }}
+            />
+            {handle.label && (
+              <span
+                className="absolute text-[8px] text-foreground-muted font-medium pointer-events-none whitespace-nowrap"
+                style={{
+                  ...(handle.position === 'left'
+                    ? { left: 14, top: `${handle.top}px`, transform: 'translateY(-50%)' }
+                    : { right: 14, top: `${handle.top}px`, transform: 'translateY(-50%)' }),
+                }}
+              >
+                {handle.label}
+              </span>
+            )}
+          </React.Fragment>
         );
       })}
     </div>
