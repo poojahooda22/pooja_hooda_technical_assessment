@@ -1,31 +1,13 @@
 {
-  "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
-    }
-  ],
+  "outputDirectory": "frontend/build",
   "rewrites": [
     {
       "source": "/pipelines/(.*)",
       "destination": "/api/index.py"
     },
     {
-      "source": "/static/(.*)",
-      "destination": "/frontend/static/$1"
-    },
-    {
-      "source": "/(.*\\.(json|ico|png|txt|woff2|woff|ttf))",
-      "destination": "/frontend/$1"
-    },
-    {
       "source": "/(.*)",
-      "destination": "/frontend/index.html"
+      "destination": "/index.html"
     }
   ]
 }
