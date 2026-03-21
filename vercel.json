@@ -1,5 +1,4 @@
 {
-  "outputDirectory": "frontend/build",
   "rewrites": [
     {
       "source": "/pipelines/(.*)",
