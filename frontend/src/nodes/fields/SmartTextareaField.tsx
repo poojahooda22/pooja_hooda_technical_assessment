@@ -109,7 +109,7 @@ export const SmartTextareaField: React.FC<SmartTextareaFieldProps> = ({ name, la
 
   return (
     <label className="flex flex-col gap-1 relative">
-      <span className="text-xs font-medium text-foreground-secondary">{label}</span>
+      <span className="text-xxs font-medium text-foreground-secondary">{label}</span>
       <div className="bg-background-secondary border border-secondary rounded-md shadow-xs
                       focus-within:border-brand focus-within:shadow-focus-ring-brand-xs
                       transition-[border-color,box-shadow] duration-200">
@@ -120,7 +120,7 @@ export const SmartTextareaField: React.FC<SmartTextareaFieldProps> = ({ name, la
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           rows={2}
-          className="nodrag nowheel scrollbar-thin w-full px-xl py-md text-sm bg-transparent
+          className="nodrag nowheel scrollbar-thin w-full px-xl py-md text-[8px] bg-transparent
                      text-foreground focus:outline-none
                      resize-none placeholder:text-foreground-placeholder border-none"
           placeholder={extractVariables(localValue).length > 0 ? '' : 'Enter text or use {{ to reference nodes'}

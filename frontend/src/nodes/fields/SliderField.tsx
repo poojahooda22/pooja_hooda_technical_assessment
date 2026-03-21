@@ -13,7 +13,7 @@ interface SliderFieldProps {
 
 export const SliderField: React.FC<SliderFieldProps> = ({ name, label, value, onChange, min = 0, max = 100, step = 1 }) => (
   <label className="flex flex-col gap-1">
-    <span className="text-xs text-foreground-secondary font-medium">
+    <span className="text-xxs text-foreground-secondary font-medium">
       {label}: <span className="text-foreground font-semibold">{value}</span>
     </span>
     <SliderPrimitive.Root

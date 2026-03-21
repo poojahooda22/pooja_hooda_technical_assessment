@@ -12,12 +12,12 @@ interface SelectFieldProps {
 
 export const SelectField: React.FC<SelectFieldProps> = ({ name, label, value, onChange, options = [] }) => (
   <label className="flex flex-col gap-1">
-    <span className="text-xs text-foreground-secondary font-medium">{label}</span>
+    <span className="text-xxs text-foreground-secondary font-medium">{label}</span>
     <div className="relative">
       <select
         value={value}
         onChange={(e) => onChange(name, e.target.value)}
-        className="w-full px-xl py-md pr-8 text-sm bg-background-secondary border border-secondary rounded-md shadow-xs
+        className="w-full px-xl py-md pr-8 text-[8px] bg-background-secondary border border-secondary rounded-md shadow-xs
                    focus:outline-none focus:border-brand focus:shadow-focus-ring-brand-xs
                    transition-[border-color,box-shadow] duration-200
                    text-foreground appearance-none cursor-pointer"
