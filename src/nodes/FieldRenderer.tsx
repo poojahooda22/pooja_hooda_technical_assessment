@@ -3,7 +3,6 @@ import { TextField } from './fields/TextField';
 import { SelectField } from './fields/SelectField';
 import { TextAreaField } from './fields/TextAreaField';
 import { SliderField } from './fields/SliderField';
-import { VariableTextField } from './fields/VariableTextField';
 import { SmartTextareaField } from './fields/SmartTextareaField';
 
 interface BaseFieldProps {
@@ -25,7 +24,6 @@ const FIELD_COMPONENTS: Record<string, FieldComponent> = {
   select: SelectField as FieldComponent,
   textarea: TextAreaField as FieldComponent,
   slider: SliderField as FieldComponent,
-  variableText: VariableTextField as FieldComponent,
   smartTextarea: SmartTextareaField as FieldComponent,
 };
 

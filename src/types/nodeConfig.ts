@@ -18,7 +18,7 @@ export interface DynamicHandle {
   top: number;
 }
 
-export type FieldType = 'text' | 'select' | 'textarea' | 'slider' | 'variableText' | 'smartTextarea';
+export type FieldType = 'text' | 'select' | 'textarea' | 'slider' | 'smartTextarea';
 
 export interface FieldOption {
   value: string;

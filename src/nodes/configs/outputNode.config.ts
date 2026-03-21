@@ -27,7 +27,7 @@ const config: NodeConfig = {
     },
     {
       name: 'outputValue',
-      type: 'variableText',
+      type: 'smartTextarea',
       label: 'Output',
       defaultValue: '',
     },

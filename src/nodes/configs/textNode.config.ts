@@ -15,7 +15,7 @@ const config: NodeConfig = {
   fields: [
     {
       name: 'text',
-      type: 'variableText',
+      type: 'smartTextarea',
       label: 'Text',
       defaultValue: '',
     },
