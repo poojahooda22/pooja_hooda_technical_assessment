@@ -1,0 +1,19 @@
+# Agent Communication Files
+.claude/
+.claude
+Gemini to Claude.jsonl
+Gemini2claude.jsonl
+
+# Assessment Analysis Files
+analysis.txt
+projectdocs.txt
+project docs.txt
+
+# Python Env
+env/
+venv/
+__pycache__/
+
+# Node Modules
+node_modules/
+.env
