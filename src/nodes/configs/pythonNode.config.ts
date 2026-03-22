@@ -7,7 +7,7 @@ const config: NodeConfig = {
   icon: 'Terminal',
   category: 'transform',
   handles: [
-    { type: 'source', position: 'right', id: 'result', label: 'Result' },
+    { type: 'source', position: 'right', id: 'result', label: 'Result', style: { top: '60px' } },
   ],
   fields: [
     { name: 'code', type: 'textarea', label: 'Python Code', defaultValue: 'def run():\n  pass' },

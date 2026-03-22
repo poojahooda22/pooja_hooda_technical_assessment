@@ -6,7 +6,7 @@ const config: NodeConfig = {
   icon: 'ArrowRightToLine',
   category: 'general',
   handles: [
-    { type: 'source', position: 'right', id: 'value', label: 'Value', style: { top: '62%' } },
+    { type: 'source', position: 'right', id: 'value', label: 'Value', style: { top: '110px' } },
   ],
   fields: [
     {

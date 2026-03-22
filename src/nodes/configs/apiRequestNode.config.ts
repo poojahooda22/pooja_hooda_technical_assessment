@@ -6,8 +6,8 @@ const config: NodeConfig = {
   icon: 'Globe',
   category: 'integration',
   handles: [
-    { type: 'target', position: 'left', id: 'body', label: 'Body', style: { top: '68%' } },
-    { type: 'source', position: 'right', id: 'response', label: 'Response', style: { top: '50%' } },
+    { type: 'target', position: 'left', id: 'body', label: 'Body', style: { top: '160px' } },
+    { type: 'source', position: 'right', id: 'response', label: 'Response', style: { top: '100px' } },
   ],
   fields: [
     {

@@ -6,9 +6,9 @@ const config: NodeConfig = {
   icon: 'GitBranch',
   category: 'logic',
   handles: [
-    { type: 'target', position: 'left', id: 'input', label: 'Input', style: { top: '26%' } },
-    { type: 'source', position: 'right', id: 'true', label: 'True', style: { top: '38%' } },
-    { type: 'source', position: 'right', id: 'false', label: 'False', style: { top: '62%' } },
+    { type: 'target', position: 'left', id: 'input', label: 'Input', style: { top: '42px' } },
+    { type: 'source', position: 'right', id: 'true', label: 'True', style: { top: '50px' } },
+    { type: 'source', position: 'right', id: 'false', label: 'False', style: { top: '110px' } },
   ],
   fields: [
     {

@@ -14,9 +14,9 @@ const config: NodeConfig = {
   icon: 'Brain',
   category: 'llm',
   handles: [
-    { type: 'target', position: 'left', id: 'system', label: 'System', style: { top: '33%' } },
-    { type: 'target', position: 'left', id: 'prompt', label: 'Prompt', style: { top: '55%' } },
-    { type: 'source', position: 'right', id: 'response', label: 'Response', style: { top: '82%' } },
+    { type: 'target', position: 'left', id: 'system', label: 'System', style: { top: '100px' } },
+    { type: 'target', position: 'left', id: 'prompt', label: 'Prompt', style: { top: '170px' } },
+    { type: 'source', position: 'right', id: 'response', label: 'Response', style: { top: '260px' } },
   ],
   fields: [
     { name: 'llmName', type: 'text', label: 'Name', defaultValue: (id: string) => id.replace('llm-', 'llm_') },
