@@ -45,7 +45,7 @@ code {
   scrollbar-color: var(--rare-border-secondary) transparent;
 }
 .scrollbar-thin::-webkit-scrollbar {
-  width: 5px;
+  width: 3px;
 }
 .scrollbar-thin::-webkit-scrollbar-track {
   background: transparent;

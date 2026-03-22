@@ -42,7 +42,7 @@ export const PipelineToolbar = () => {
   }, [query]);
 
   return (
-    <div className="bg-background shadow-xs">
+    <div className="bg-background shadow-sm">
       <Tabs type="button-white-border" defaultValue={CATEGORY_ORDER[0]}>
         {/* Tabs row: category triggers + search + theme toggle */}
         <div className="flex items-center gap-xl px-xl py-xs">

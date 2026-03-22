@@ -83,7 +83,8 @@ export const useStore = create<StoreState>()(
     });
   },
   onNodesChange: (changes: NodeChange[]): void => {
-    const hasRemove = changes.some((c) => c.type === 'remove');
+    const removeChanges = changes.filter((c) => c.type === 'remove');
+    const hasRemove = removeChanges.length > 0;
     const hasDragEnd = changes.some(
       (c) => c.type === 'position' && 'dragging' in c && c.dragging === false
     );
@@ -93,10 +94,18 @@ export const useStore = create<StoreState>()(
       get().pushHistory();
     }
 
-    set({
-      nodes: applyNodeChanges(changes, get().nodes),
-      ...(hasRemove ? { isDirty: true } : {}),
-    });
+    const newNodes = applyNodeChanges(changes, get().nodes);
+
+    // Clean up orphaned edges when nodes are removed
+    if (hasRemove) {
+      const removedIds = new Set(removeChanges.map((c) => (c as { id: string }).id));
+      const newEdges = get().edges.filter(
+        (e) => !removedIds.has(e.source) && !removedIds.has(e.target)
+      );
+      set({ nodes: newNodes, edges: newEdges, isDirty: true });
+    } else {
+      set({ nodes: newNodes });
+    }
   },
   onEdgesChange: (changes: EdgeChange[]): void => {
     const hasStructuralChange = changes.some((c) => c.type === 'remove');
