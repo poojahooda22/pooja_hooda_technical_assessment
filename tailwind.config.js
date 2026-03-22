@@ -12,6 +12,7 @@ module.exports = {
         background: {
           DEFAULT: 'var(--rare-bg)',
           alt: 'var(--rare-bg-alt)',
+          'node-header': 'var(--rare-node-header)',
           hover: 'var(--rare-bg-hover)',
           solid: 'var(--rare-bg-solid)',
           secondary: 'var(--rare-bg-secondary)',
@@ -46,6 +47,19 @@ module.exports = {
           'success-secondary': 'var(--rare-bg-success-secondary)',
           'success-solid': 'var(--rare-bg-success-solid)',
           'success-solid-hover': 'var(--rare-bg-success-solid-hover)',
+        },
+        /* ── Component: Tabs ───────────────────────────────────── */
+        'tab-active-bg': 'var(--rare-tab-active-bg)',
+        /* ── Component: Alert / Toast ──────────────────────────── */
+        alert: {
+          brand: 'var(--rare-alert-brand-bg)',
+          'brand-border': 'var(--rare-alert-brand-border)',
+          error: 'var(--rare-alert-error-bg)',
+          'error-border': 'var(--rare-alert-error-border)',
+          warning: 'var(--rare-alert-warning-bg)',
+          'warning-border': 'var(--rare-alert-warning-border)',
+          success: 'var(--rare-alert-success-bg)',
+          'success-border': 'var(--rare-alert-success-border)',
         },
         /* ── Text (typography) ───────────────────────────────── */
         foreground: {
@@ -156,6 +170,10 @@ module.exports = {
           'bg-hover': 'var(--rare-btn-tertiary-color-bg-hover)',
           'fg-hover': 'var(--rare-btn-tertiary-color-fg-hover)',
         },
+        /* ── Semantic tokens for Magic UI components ──────────── */
+        'primary-foreground': 'var(--primary-foreground)',
+        'accent-foreground': 'var(--accent-foreground)',
+        input: 'var(--input)',
         /* ── Node category accents (project-specific) ────────── */
         cat: {
           io: '#3b82f6',
@@ -183,6 +201,10 @@ module.exports = {
         'warning-solid': 'var(--rare-border-warning-solid)',
         success: 'var(--rare-border-success)',
         'success-solid': 'var(--rare-border-success-solid)',
+        'alert-brand': 'var(--rare-alert-brand-border)',
+        'alert-error': 'var(--rare-alert-error-border)',
+        'alert-warning': 'var(--rare-alert-warning-border)',
+        'alert-success': 'var(--rare-alert-success-border)',
       },
       /* ── Spacing scale ─────────────────────────────────────── */
       spacing: {
@@ -292,6 +314,10 @@ module.exports = {
           '0%': { opacity: '0', transform: 'scale(1.03)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
+        'rainbow': {
+          '0%': { 'background-position': '0%' },
+          '100%': { 'background-position': '200%' },
+        },
       },
       /* ── Animations ────────────────────────────────────────── */
       animation: {
@@ -300,6 +326,7 @@ module.exports = {
         'shimmer': 'rare-shimmer 2s ease-in-out infinite',
         'badge-pulse': 'rare-badge-pulse 2s ease-in-out infinite',
         'overshoot': 'rare-overshoot 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'rainbow': 'rainbow var(--speed, 2s) infinite linear',
       },
     },
   },

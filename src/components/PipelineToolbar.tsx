@@ -1,20 +1,16 @@
-// PipelineToolbar.tsx — Auto-generated from node registry, grouped by category
+// PipelineToolbar.tsx — VectorShift-inspired tabbed toolbar
+// Row 1: Search + category tab labels
+// Row 2: Node cards (icon + label) for selected category
 
-import { useState, useEffect, useMemo } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Search, X } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from './Tabs';
 import { DraggableNode } from './DraggableNode';
+import { AnimatedThemeToggler } from './AnimatedThemeToggler';
 import { nodeConfigs } from '../nodes/registry';
+import { cn } from '../lib/utils';
+import { CATEGORY_ORDER, CATEGORY_LABELS } from '../constants/categories';
 import type { NodeConfig } from '../types/nodeConfig';
-
-const CATEGORY_ORDER: string[] = ['general', 'llm', 'logic', 'transform', 'integration', 'utility'];
-const CATEGORY_LABELS: Record<string, string> = {
-  general: 'General',
-  llm: 'LLMs',
-  logic: 'Logic',
-  transform: 'Data Transform',
-  integration: 'Integration',
-  utility: 'Utility',
-};
 
 interface GroupedCategory {
   category: string;
@@ -23,14 +19,7 @@ interface GroupedCategory {
 }
 
 export const PipelineToolbar = () => {
-  const [theme, setTheme] = useState<string>(() => localStorage.getItem('theme') || 'light');
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = (): void => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
+  const [query, setQuery] = useState('');
 
   const grouped = useMemo<GroupedCategory[]>(() =>
     CATEGORY_ORDER
@@ -43,30 +32,98 @@ export const PipelineToolbar = () => {
     []
   );
 
+  const searchResults = useMemo(() => {
+    if (!query.trim()) return null;
+    const q = query.toLowerCase();
+    return nodeConfigs.filter((c) => {
+      const categoryLabel = (CATEGORY_LABELS[c.category] || c.category).toLowerCase();
+      return c.label.toLowerCase().includes(q) || categoryLabel.includes(q) || c.type.toLowerCase().includes(q);
+    });
+  }, [query]);
+
   return (
-    <div className="px-xl py-lg bg-background border-b border-secondary flex items-center shadow-xs">
-      <div className="flex flex-wrap items-center gap-x-5xl gap-y-md">
-        {grouped.map((group) => (
-          <div key={group.category} className="flex items-center gap-md">
-            {group.nodes.map((config) => (
-              <DraggableNode
-                key={config.type}
-                type={config.type}
-                label={config.label}
-                icon={config.icon}
-                category={config.category}
-              />
+    <div className="bg-background shadow-xs">
+      <Tabs type="button-white-border" defaultValue={CATEGORY_ORDER[0]}>
+        {/* Tabs row: category triggers + search + theme toggle */}
+        <div className="flex items-center gap-xl px-xl py-xs">
+          <TabsList className="flex-1 min-w-0">
+            {grouped.map((g) => (
+              <TabsTrigger key={g.category} value={g.category}>
+                {g.label}
+              </TabsTrigger>
             ))}
-          </div>
-        ))}
-      </div>
-      <button onClick={toggleTheme} className="ml-auto inline-flex items-center justify-center size-9
-                   rounded-xl bg-transparent text-foreground-tertiary
-                   hover:bg-background-secondary-hover hover:text-foreground
-                   transition-all duration-200 cursor-pointer
-                   focus-visible:shadow-focus-ring-brand-xs focus-visible:outline-none">
-        {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-      </button>
+
+            {/* Search — inside tab strip, after all triggers */}
+            <div className="relative flex items-center ml-sm shrink-0" onClick={(e) => e.stopPropagation()}>
+              <Search size={14} className="absolute left-md text-foreground-muted pointer-events-none" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search Nodes"
+                className={cn(
+                  'h-7 pl-7xl pr-xl text-[10px] font-medium rounded-md border border-secondary bg-background-secondary',
+                  'placeholder:text-foreground-placeholder',
+                  'focus:shadow-focus-ring-brand-xs focus:outline-none focus:border-brand',
+                  'transition-all duration-200 w-[150px] focus:w-[180px]'
+                )}
+              />
+              {query && (
+                <button
+                  onClick={() => setQuery('')}
+                  className="absolute right-xs p-xxs rounded-sm text-foreground-muted hover:text-foreground cursor-pointer"
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+          </TabsList>
+
+          {/* Theme toggle — right end */}
+          <AnimatedThemeToggler className="shrink-0" />
+        </div>
+
+        {/* Row 2: Node cards for selected category (or search results) */}
+        <div className="px-xl py-sm overflow-x-auto">
+          {searchResults ? (
+            <div className="flex items-center gap-lg">
+              {searchResults.length > 0 ? (
+                searchResults.map((config) => (
+                  <DraggableNode
+                    key={config.type}
+                    type={config.type}
+                    label={config.label}
+                    icon={config.icon}
+                    category={config.category}
+                  />
+                ))
+              ) : (
+                <span className="text-xs text-foreground-muted py-md">No nodes found</span>
+              )}
+            </div>
+          ) : (
+            grouped.map((g) => (
+              <TabsContent
+                key={g.category}
+                value={g.category}
+                className="!mt-0 data-[state=inactive]:hidden"
+              >
+                <div className="flex items-start gap-lg">
+                  {g.nodes.map((config) => (
+                    <DraggableNode
+                      key={config.type}
+                      type={config.type}
+                      label={config.label}
+                      icon={config.icon}
+                      category={config.category}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+            ))
+          )}
+        </div>
+      </Tabs>
     </div>
   );
 };

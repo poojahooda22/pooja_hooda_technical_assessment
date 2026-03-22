@@ -2,7 +2,6 @@ import { ReactFlowProvider } from 'reactflow';
 import { PipelineToolbar } from './components/PipelineToolbar';
 import { PipelineCanvas } from './components/PipelineCanvas';
 import { SubmitButton } from './components/SubmitButton';
-import { Toaster } from 'sonner';
 
 function App() {
   return (
@@ -11,7 +10,6 @@ function App() {
         <PipelineToolbar />
         <PipelineCanvas />
         <SubmitButton />
-        <Toaster position="top-right" richColors />
       </div>
     </ReactFlowProvider>
   );

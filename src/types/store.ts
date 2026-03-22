@@ -7,6 +7,11 @@ export interface NodeData extends Record<string, unknown> {
   nodeType: string;
 }
 
+export interface HistoryEntry {
+  nodes: Node<NodeData>[];
+  edges: Edge[];
+}
+
 export interface StoreState {
   nodes: Node<NodeData>[];
   edges: Edge[];
@@ -19,4 +24,11 @@ export interface StoreState {
   updateNodeField: (nodeId: string, fieldName: string, fieldValue: unknown) => void;
   isDirty: boolean;
   markClean: () => void;
+
+  // Undo/redo history
+  past: HistoryEntry[];
+  future: HistoryEntry[];
+  pushHistory: () => void;
+  undo: () => void;
+  redo: () => void;
 }

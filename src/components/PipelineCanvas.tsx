@@ -1,12 +1,13 @@
 // PipelineCanvas.tsx — Pipeline canvas with ReactFlow
 
-import { useState, useRef, useCallback } from 'react';
-import ReactFlow, { Controls, Background, MiniMap, Connection, ReactFlowInstance, Node, ConnectionLineType } from 'reactflow';
+import { useState, useRef, useCallback, useMemo } from 'react';
+import ReactFlow, { Controls, Background, MiniMap, Connection, ReactFlowInstance, Node, ConnectionLineType, SelectionMode } from 'reactflow';
 import { useStore } from '../store';
 import { shallow } from 'zustand/shallow';
-import { nodeTypes, nodeConfigs, getInitNodeData } from '../nodes/registry';
+import { nodeTypes, getInitNodeData } from '../nodes/registry';
 import { CustomEdge } from './CustomEdge';
-import { CATEGORY_THEME } from '../constants/theme';
+import { AddNodeMenu } from './AddNodeMenu';
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import type { StoreState, NodeData } from '../types/store';
 
 import 'reactflow/dist/style.css';
@@ -14,11 +15,6 @@ import 'reactflow/dist/style.css';
 const gridSize = 20;
 const proOptions = { hideAttribution: true };
 const edgeTypes = { custom: CustomEdge };
-
-// Module-level lookup for MiniMap node colors (avoids .find() per node per render)
-const NODE_COLOR_MAP: Record<string, string> = Object.fromEntries(
-  nodeConfigs.map((c) => [c.type, CATEGORY_THEME[c.category]?.accent || CATEGORY_THEME.utility.accent])
-);
 
 const selector = (state: StoreState) => ({
   nodes: state.nodes,
@@ -29,6 +25,9 @@ const selector = (state: StoreState) => ({
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
 });
+
+// Track mouse position at module level — avoids re-renders on every mousemove
+let lastMouse = { x: 0, y: 0 };
 
 export const PipelineCanvas = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
@@ -43,11 +42,57 @@ export const PipelineCanvas = () => {
     onConnect,
   } = useStore(selector, shallow);
 
+  // Add-node menu state (Blender Shift+A)
+  const [addMenuOpen, setAddMenuOpen] = useState(false);
+  const [addMenuScreenPos, setAddMenuScreenPos] = useState({ x: 0, y: 0 });
+  const addMenuFlowPos = useRef({ x: 0, y: 0 });
+
+  const toggleAddMenu = useCallback(() => {
+    setAddMenuOpen((prev) => {
+      if (prev) return false;
+      // Opening: capture cursor position and project to flow coordinates
+      setAddMenuScreenPos({ x: lastMouse.x, y: lastMouse.y });
+      if (reactFlowInstance && reactFlowWrapper.current) {
+        const bounds = reactFlowWrapper.current.getBoundingClientRect();
+        const projected = reactFlowInstance.project({
+          x: lastMouse.x - bounds.left,
+          y: lastMouse.y - bounds.top,
+        });
+        addMenuFlowPos.current = {
+          x: Math.round(projected.x / gridSize) * gridSize,
+          y: Math.round(projected.y / gridSize) * gridSize,
+        };
+      }
+      return true;
+    });
+  }, [reactFlowInstance]);
+
+  const closeAddMenu = useCallback(() => setAddMenuOpen(false), []);
+
+  const handleAddNode = useCallback((type: string) => {
+    const nodeID = getNodeID(type);
+    const newNode = {
+      id: nodeID,
+      type,
+      position: { ...addMenuFlowPos.current },
+      data: getInitNodeData(nodeID, type) as NodeData,
+    };
+    addNode(newNode as Node<NodeData>);
+    setAddMenuOpen(false);
+  }, [getNodeID, addNode]);
+
+  const shortcutOptions = useMemo(() => ({ onToggleAddMenu: toggleAddMenu }), [toggleAddMenu]);
+
+  // Blender-inspired keyboard shortcuts (Ctrl+Z, Ctrl+Shift+Z, Ctrl+A, Space=pan, Shift+A=add)
+  const { isSpaceHeld } = useKeyboardShortcuts(shortcutOptions);
+
+  // Track mouse for Shift+A menu positioning
+  const onMouseMove = useCallback((e: React.MouseEvent) => {
+    lastMouse.x = e.clientX;
+    lastMouse.y = e.clientY;
+  }, []);
+
   // Connection validation: O(1) checks only (no cycle detection — backend handles DAG)
-  // Uses useStore.getState() to read edges at call-time instead of reactive dependency.
-  // This keeps the callback reference stable (empty deps) and prevents ReactFlow's
-  // StoreUpdater from re-syncing on every edges change.
-  // Allows fan-in (multiple sources -> one target handle) — only blocks truly identical edges.
   const isValidConnection = useCallback(
     (connection: Connection): boolean => {
       if (connection.source === connection.target) return false;
@@ -102,7 +147,13 @@ export const PipelineCanvas = () => {
   }, []);
 
   return (
-    <div ref={reactFlowWrapper} className="flex-1 w-full">
+    <div ref={reactFlowWrapper} className="flex-1 w-full" onMouseMove={onMouseMove}>
+      <AddNodeMenu
+        isOpen={addMenuOpen}
+        screenPosition={addMenuScreenPos}
+        onClose={closeAddMenu}
+        onAddNode={handleAddNode}
+      />
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -120,15 +171,21 @@ export const PipelineCanvas = () => {
         connectionLineType={ConnectionLineType.SmoothStep}
         isValidConnection={isValidConnection}
         deleteKeyCode={['Delete', 'Backspace']}
+        selectionOnDrag={!isSpaceHeld}
+        selectionMode={SelectionMode.Partial}
+        multiSelectionKeyCode="Shift"
+        panOnDrag={isSpaceHeld ? [0, 1, 2] : [1, 2]}
         fitView
-        className="bg-background-secondary"
+        className={`bg-background${isSpaceHeld ? ' space-pan-active' : ''}`}
       >
         <Background color="var(--rare-fg-faint)" gap={gridSize} size={1} />
-        <Controls position="bottom-left" className="!bg-background !border-secondary !shadow-xs" />
+        <Controls position="bottom-left" />
         <MiniMap
           position="bottom-right"
-          nodeColor={useCallback((node: Node) => NODE_COLOR_MAP[node.type ?? ''] || CATEGORY_THEME.utility.accent, [])}
-          className="!bg-background-alt !border-secondary !shadow-xs"
+          nodeColor={() => 'var(--rare-brand-200)'}
+          nodeStrokeColor="var(--rare-border-secondary)"
+          nodeStrokeWidth={1}
+          className="!bg-background-node-header !border-secondary !shadow-xs"
         />
 
         {/* Empty state */}

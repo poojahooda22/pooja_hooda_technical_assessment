@@ -1,12 +1,14 @@
-// SubmitButton.tsx — Submit pipeline to backend with Sonner toast notification
+// SubmitButton.tsx — Submit pipeline to backend with design system Toast notification
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useStore } from '../store';
 import { shallow } from 'zustand/shallow';
-import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { RainbowButton } from './RainbowButton';
+import { Toast } from './Toast';
 import { API_BASE_URL } from '../constants/api';
 import type { StoreState } from '../types/store';
+import type { ToastColor } from './Toast';
 
 interface PipelineResponse {
   num_nodes: number;
@@ -24,6 +26,14 @@ const selector = (state: StoreState) => ({
 export const SubmitButton = () => {
   const { nodes, edges, isDirty, markClean } = useStore(selector, shallow);
   const [loading, setLoading] = useState<boolean>(false);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastData, setToastData] = useState<{
+    color: ToastColor;
+    title: string;
+    description: string;
+  }>({ color: 'success', title: '', description: '' });
+
+  const handleOpenChange = useCallback((open: boolean) => setToastOpen(open), []);
 
   const handleSubmit = async (): Promise<void> => {
     setLoading(true);
@@ -39,53 +49,62 @@ export const SubmitButton = () => {
       }
 
       const data: PipelineResponse = await response.json();
-
-      // Console output for debugging visibility
       console.table(data);
-
-      // Sonner toast notification
-      // Mark pipeline as clean (disables button until next change)
       markClean();
 
       if (data.is_dag) {
-        toast.success('Pipeline Analysis', {
+        setToastData({
+          color: 'success',
+          title: 'Pipeline Analysis',
           description: `Nodes: ${data.num_nodes}  |  Edges: ${data.num_edges}  |  DAG: Yes`,
-          duration: 5000,
         });
       } else {
-        toast.warning('Pipeline Has Cycles', {
-          description: `Nodes: ${data.num_nodes}  |  Edges: ${data.num_edges}  |  DAG: No -- contains cycles`,
-          duration: 7000,
+        setToastData({
+          color: 'warning',
+          title: 'Pipeline Has Cycles',
+          description: `Nodes: ${data.num_nodes}  |  Edges: ${data.num_edges}  |  DAG: No — contains cycles`,
         });
       }
+      setToastOpen(true);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
-      toast.error('Submission Failed', {
+      setToastData({
+        color: 'error',
+        title: 'Submission Failed',
         description: message,
-        duration: 5000,
       });
+      setToastOpen(true);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50">
-      <button
-        onClick={handleSubmit}
-        disabled={loading || !isDirty || nodes.length === 0}
-        className="inline-flex items-center justify-center gap-md h-9 px-xl
-                   text-sm font-semibold rounded-md shadow-xs
-                   bg-background-brand-solid text-fg-white
-                   hover:bg-background-brand-solid-hover hover:scale-[1.02]
-                   active:scale-[0.97] motion-reduce:hover:scale-100 motion-reduce:active:scale-100
-                   focus-visible:shadow-focus-ring-brand-xs focus-visible:outline-none
-                   disabled:pointer-events-none disabled:opacity-50
-                   transition-all duration-200 border border-transparent cursor-pointer"
-      >
-        {loading && <Loader2 size={16} className="animate-spin" />}
-        <span>{loading ? 'Analyzing...' : 'Submit Pipeline'}</span>
-      </button>
-    </div>
+    <>
+      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50">
+        <RainbowButton
+          onClick={handleSubmit}
+          disabled={loading || !isDirty || nodes.length === 0}
+          size="sm"
+          className="focus-visible:shadow-focus-ring-brand-xs focus-visible:outline-none"
+        >
+          {loading && <Loader2 size={16} className="animate-spin" />}
+          <span>{loading ? 'Analyzing...' : 'Submit Pipeline'}</span>
+        </RainbowButton>
+      </div>
+
+      <Toast
+        color={toastData.color}
+        size="sm"
+        title={toastData.title}
+        description={toastData.description}
+        position="top-right"
+        open={toastOpen}
+        onOpenChange={handleOpenChange}
+        autoHideDuration={5000}
+        showClose
+        onClose={() => setToastOpen(false)}
+      />
+    </>
   );
 };

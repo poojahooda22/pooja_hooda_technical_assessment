@@ -133,7 +133,7 @@ export const SmartTextareaField: React.FC<SmartTextareaFieldProps> = ({ name, la
   return (
     <label className="flex flex-col gap-1 relative">
       <span className="text-xxs font-medium text-foreground-secondary">{label}</span>
-      <div className="bg-background-secondary border border-secondary rounded-md shadow-xs
+      <div className="bg-background-alt border border-primary rounded-md
                       focus-within:border-brand focus-within:shadow-focus-ring-brand-xs
                       transition-[border-color,box-shadow] duration-200">
         <VariableBadgeBar value={rawValue} onRemove={handleRemoveVar} />

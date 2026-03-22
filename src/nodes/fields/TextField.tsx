@@ -13,7 +13,7 @@ export const TextField: React.FC<TextFieldProps> = ({ name, label, value, onChan
       type="text"
       value={value}
       onChange={(e) => onChange(name, e.target.value)}
-      className="w-full px-xl py-md text-[8px] bg-background-secondary border border-secondary rounded-md shadow-xs
+      className="w-full px-xl py-md text-[8px] bg-background-alt border border-primary rounded-md
                  focus:outline-none focus:border-brand focus:shadow-focus-ring-brand-xs
                  transition-[border-color,box-shadow] duration-200
                  text-foreground placeholder:text-foreground-placeholder"

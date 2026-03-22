@@ -1,5 +1,16 @@
 // theme.ts — Single source of truth for category styling
 
+// Unified brand theme for all nodes and toolbar buttons (VectorShift-style single accent)
+export const UNIFIED_NODE_THEME = {
+  accent: '#2970ff',
+  headerLight: 'bg-brand-50',
+  headerDark: 'bg-brand-950/30',
+  text: 'text-brand-700',
+  textDark: 'text-brand-300',
+  toolbar: 'border-secondary bg-transparent text-foreground hover:bg-background-secondary shadow-none',
+  toolbarDark: 'border-secondary bg-transparent text-foreground hover:bg-background-secondary shadow-none',
+} as const;
+
 export interface CategoryTheme {
   accent: string;
   headerLight: string;

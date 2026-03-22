@@ -7,7 +7,7 @@ import { shallow } from 'zustand/shallow';
 import * as LucideIcons from 'lucide-react';
 import { useStore } from '../store';
 import { getInitNodeData } from '../nodes/registry';
-import { CATEGORY_THEME } from '../constants/theme';
+import { UNIFIED_NODE_THEME } from '../constants/theme';
 import { cn } from '../lib/utils';
 import { useTheme } from '../hooks/useTheme';
 import type { NodeData, StoreState } from '../types/store';
@@ -29,7 +29,7 @@ interface DraggableNodeProps {
   category: string;
 }
 
-export const DraggableNode = ({ type, label, icon, category }: DraggableNodeProps) => {
+export const DraggableNode = ({ type, label, icon }: DraggableNodeProps) => {
   const isDark = useTheme();
   const { project } = useReactFlow();
   const { getNodeID, addNode } = useStore(storeSelector, shallow);
@@ -77,8 +77,7 @@ export const DraggableNode = ({ type, label, icon, category }: DraggableNodeProp
   const IconComponent = icon
     ? (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[icon]
     : null;
-  const cat = CATEGORY_THEME[category] || CATEGORY_THEME.utility;
-  const styles = isDark ? cat.toolbarDark : cat.toolbar;
+  const styles = isDark ? UNIFIED_NODE_THEME.toolbarDark : UNIFIED_NODE_THEME.toolbar;
 
   return (
     <div
@@ -86,8 +85,8 @@ export const DraggableNode = ({ type, label, icon, category }: DraggableNodeProp
       onDragStart={(event) => onDragStart(event, type)}
       onDragEnd={(event) => ((event.target as HTMLDivElement).style.cursor = 'grab')}
       className={cn(
-        'flex items-center gap-md px-xl py-md rounded-md border cursor-grab text-xs font-medium',
-        'transition-all duration-200 select-none',
+        'flex items-center gap-md px-xl py-sm rounded-md border cursor-grab text-[10px] font-medium',
+        'transition-all duration-200 select-none whitespace-nowrap',
         'hover:scale-[1.02] active:scale-[0.97] motion-reduce:hover:scale-100 motion-reduce:active:scale-100',
         styles
       )}

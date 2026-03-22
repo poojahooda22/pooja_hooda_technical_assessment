@@ -366,6 +366,7 @@
   /* ── Background ─────────────────────────────────────────────────── */
   --rare-bg: #ffffff;
   --rare-bg-alt: #ffffff;
+  --rare-node-header: var(--rare-gray-iron-100);
   --rare-bg-hover: var(--rare-gray-iron-50);
   --rare-bg-solid: var(--rare-gray-iron-950);
   --rare-bg-secondary: var(--rare-gray-iron-50);
@@ -653,6 +654,7 @@
   /* ── Background ─────────────────────────────────────────────────── */
   --rare-bg: var(--rare-gray-iron-950);
   --rare-bg-alt: var(--rare-gray-iron-900);
+  --rare-node-header: var(--rare-gray-iron-950);
   --rare-bg-hover: var(--rare-gray-iron-800);
   --rare-bg-solid: var(--rare-gray-iron-800);
   --rare-bg-secondary: var(--rare-gray-iron-900);
@@ -770,6 +772,15 @@
   --rare-focus-ring-gray: 0 0 0 2px rgba(255, 255, 255, 0.12);
   --rare-focus-ring-gray-secondary: 0 0 0 2px rgba(255, 255, 255, 0.18);
   --rare-focus-ring-error: 0 0 0 2px rgba(217, 45, 32, 0.35);
+
+  /* ── Elevation (dark overrides — light shadows are invisible on dark surfaces) */
+  --rare-shadow-xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.40);
+  --rare-shadow-sm: 0px 1px 3px 0px rgba(0, 0, 0, 0.50), 0px 1px 2px 0px rgba(0, 0, 0, 0.40);
+  --rare-shadow-md: 0px 4px 8px -2px rgba(0, 0, 0, 0.50), 0px 2px 4px -2px rgba(0, 0, 0, 0.40);
+  --rare-shadow-lg: 0px 12px 16px -4px rgba(0, 0, 0, 0.50), 0px 4px 6px -2px rgba(0, 0, 0, 0.30);
+  --rare-shadow-xl: 0px 20px 24px -4px rgba(0, 0, 0, 0.50), 0px 8px 8px -4px rgba(0, 0, 0, 0.30);
+  --rare-shadow-2xl: 0px 24px 48px -12px rgba(0, 0, 0, 0.60);
+  --rare-shadow-3xl: 0px 32px 64px -12px rgba(0, 0, 0, 0.60);
 
   /* ── Component: Tabs ────────────────────────────────────────────── */
   --rare-tab-active-bg: var(--rare-gray-iron-800);

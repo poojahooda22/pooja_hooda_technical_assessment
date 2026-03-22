@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from '
 import { Handle, Position, useUpdateNodeInternals } from 'reactflow';
 import { useStore } from '../store';
 import { FieldRenderer } from './FieldRenderer';
-import { CATEGORY_THEME } from '../constants/theme';
 import { cn } from '../lib/utils';
 import * as LucideIcons from 'lucide-react';
-import { useTheme } from '../hooks/useTheme';
+import { X } from 'lucide-react';
 import type { NodeConfig, DynamicHandle } from '../types/nodeConfig';
 import type { StoreState } from '../types/store';
 
@@ -26,6 +25,7 @@ const POSITION_MAP: Record<string, Position> = {
 
 const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
   const updateNodeField = useStore((s) => s.updateNodeField);
+  const onNodesChange = useStore((s) => s.onNodesChange);
   const updateNodeInternals = useUpdateNodeInternals();
 
   // Track which handles have edges connected — for hollow vs filled dot styling
@@ -50,7 +50,6 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
   );
   const syncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevDynamicRef = useRef<string[]>([]);
-  const category = CATEGORY_THEME[config.category] || CATEGORY_THEME.utility;
 
   // Resolve dynamic handles from config's pure function (if defined)
   const dynamicHandles = useMemo<DynamicHandle[]>(() => {
@@ -82,9 +81,6 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
       onEdgesChange(dangling.map((e) => ({ id: e.id, type: 'remove' as const })));
     }
   }, [dynamicHandles, id, config.resolveDynamicHandles]);
-
-  // Detect dark mode for category-specific colors
-  const isDark = useTheme();
 
   // Initialize field values from data or config defaults
   const [fieldValues, setFieldValues] = useState<Record<string, unknown>>(() => {
@@ -129,27 +125,37 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
     ? Math.max(140, lastDynamicTop + 40)
     : undefined;
 
+  const handleDelete = (e: React.MouseEvent): void => {
+    e.stopPropagation();
+    onNodesChange([{ id, type: 'remove' }]);
+  };
+
   return (
     <div
       className={cn(
-        'bg-background rounded-xl shadow-xs relative',
+        'bg-background-alt rounded-xl shadow-md relative group',
         hasLeftDynamicHandles ? 'w-[320px]' : 'w-[240px]',
-        'transition-[shadow,border-color] duration-200 hover:shadow-sm',
-        selected ? 'shadow-focus-ring-brand border border-l-2' : 'border border-secondary border-l-2'
+        'transition-[shadow,border-color] duration-200 hover:shadow-lg',
+        selected
+          ? 'border'
+          : 'border border-secondary'
       )}
       style={{
-        borderLeftColor: category.accent,
         ...(computedMinHeight ? { minHeight: `${computedMinHeight}px` } : {}),
+        ...(selected ? { borderColor: 'var(--rare-brand-500)' } : {}),
       }}
     >
 
       {/* Header */}
-      <div className={cn(
-        'flex items-center gap-md px-xl py-md border-b border-secondary',
-        isDark ? category.headerDark : category.headerLight
-      )}>
-        {IconComponent && <IconComponent size={14} className={isDark ? category.textDark : category.text} />}
-        <span className={cn('text-xs font-semibold', isDark ? category.textDark : category.text)}>{config.label}</span>
+      <div className="flex items-center gap-md px-xl py-md bg-background-node-header rounded-t-xl">
+        {IconComponent && <IconComponent size={14} className="text-foreground-tertiary" />}
+        <span className="text-xs font-semibold text-foreground">{config.label}</span>
+        <button
+          onClick={handleDelete}
+          className="ml-auto p-0.5 rounded-sm text-fg-muted hover:text-fg-secondary cursor-pointer transition-colors"
+        >
+          <X size={12} />
+        </button>
       </div>
 
       {/* Body */}
