@@ -135,7 +135,7 @@ export const PipelineCanvas = () => {
         {nodes.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <p className="text-foreground-muted text-sm">
-              Drag nodes from the toolbar to start building your pipeline
+              Drag or click nodes from the toolbar to start building your pipeline
             </p>
           </div>
         )}

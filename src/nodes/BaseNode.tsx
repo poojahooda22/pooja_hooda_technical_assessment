@@ -132,7 +132,7 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
   return (
     <div
       className={cn(
-        'bg-background rounded-xl border-l-2 shadow-xs relative',
+        'bg-background rounded-xl shadow-xs relative',
         hasLeftDynamicHandles ? 'w-[320px]' : 'w-[240px]',
         'transition-[shadow,border-color] duration-200 hover:shadow-sm',
         selected ? 'shadow-focus-ring-brand border border-l-2' : 'border border-secondary border-l-2'
@@ -170,22 +170,6 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
         const handleId = `${id}-${handle.id}`;
         const connected = connectedHandleIds.has(handleId);
 
-        // Compute label position based on handle side
-        const labelStyle: React.CSSProperties = (() => {
-          switch (handle.position) {
-            case 'left':
-              return { left: 14, top: handle.style?.top ?? '50%', transform: 'translateY(-50%)' };
-            case 'right':
-              return { right: 14, top: handle.style?.top ?? '50%', transform: 'translateY(-50%)' };
-            case 'bottom':
-              return { bottom: 14, left: handle.style?.left ?? '50%', transform: 'translateX(-50%)' };
-            case 'top':
-              return { top: 14, left: handle.style?.left ?? '50%', transform: 'translateX(-50%)' };
-            default:
-              return { left: 14, top: '50%', transform: 'translateY(-50%)' };
-          }
-        })();
-
         return (
           <React.Fragment key={handle.id}>
             <Handle
@@ -199,14 +183,6 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
                 border: connected ? 'none' : '1.5px solid var(--rare-brand-500)',
               }}
             />
-            {handle.label && (
-              <span
-                className="absolute text-[8px] text-foreground-muted font-medium pointer-events-none whitespace-nowrap"
-                style={labelStyle}
-              >
-                {handle.label}
-              </span>
-            )}
           </React.Fragment>
         );
       })}
@@ -227,18 +203,6 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
                 border: connected ? 'none' : '1.5px solid var(--rare-brand-500)',
               }}
             />
-            {handle.label && (
-              <span
-                className="absolute text-[8px] text-foreground-muted font-medium pointer-events-none whitespace-nowrap"
-                style={{
-                  ...(handle.position === 'left'
-                    ? { left: 14, top: `${handle.top}px`, transform: 'translateY(-50%)' }
-                    : { right: 14, top: `${handle.top}px`, transform: 'translateY(-50%)' }),
-                }}
-              >
-                {handle.label}
-              </span>
-            )}
           </React.Fragment>
         );
       })}
