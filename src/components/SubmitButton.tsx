@@ -75,7 +75,7 @@ export const SubmitButton = () => {
         onClick={handleSubmit}
         disabled={loading || !isDirty || nodes.length === 0}
         className="inline-flex items-center justify-center gap-md h-9 px-xl
-                   text-sm font-semibold rounded-xl shadow-xs
+                   text-sm font-semibold rounded-md shadow-xs
                    bg-background-brand-solid text-fg-white
                    hover:bg-background-brand-solid-hover hover:scale-[1.02]
                    active:scale-[0.97] motion-reduce:hover:scale-100 motion-reduce:active:scale-100

@@ -28,7 +28,7 @@ export const NodeDropdown = ({
   <div
     ref={dropdownRef}
     className="nodrag nowheel nopan absolute left-0 right-0 top-full mt-1 bg-background border border-secondary
-               rounded-lg shadow-md z-50 max-h-48 overflow-y-auto
+               rounded-lg shadow-md z-50 max-h-48 overflow-y-auto scrollbar-thin
                animate-dropdown-grow origin-top"
   >
     <div className="px-2.5 py-1.5 text-[10px] text-foreground-muted font-semibold uppercase tracking-wide border-b border-tertiary">
