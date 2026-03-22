@@ -14,7 +14,7 @@ import type {
   EdgeChange,
   Connection,
 } from 'reactflow';
-import type { NodeData, HistoryEntry, StoreState } from './types/store';
+import type { NodeData, StoreState } from './types/store';
 
 const HISTORY_LIMIT = 50;
 

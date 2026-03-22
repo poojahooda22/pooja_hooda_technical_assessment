@@ -193,7 +193,7 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
         );
       })}
 
-      {/* Dynamic handles — same hollow/filled pattern */}
+      {/* Dynamic handles — same hollow/filled pattern, with labels */}
       {dynamicHandles.map((handle) => {
         const connected = connectedHandleIds.has(handle.id);
         return (
@@ -209,6 +209,19 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
                 border: connected ? 'none' : '1.5px solid var(--rare-brand-500)',
               }}
             />
+            {handle.label && (
+              <span
+                className="absolute text-[10px] text-brand-500 truncate pointer-events-none"
+                style={{
+                  top: `${handle.top}px`,
+                  left: handle.position === 'left' ? '16px' : undefined,
+                  right: handle.position === 'right' ? '16px' : undefined,
+                  transform: 'translateY(-50%)',
+                }}
+              >
+                {handle.label}
+              </span>
+            )}
           </React.Fragment>
         );
       })}

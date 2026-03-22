@@ -121,6 +121,8 @@ code {
 /* Blender-style cursor: default on pane, grab on nodes, hand when Space held */
 .react-flow__pane {
   cursor: default !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
 }
 .space-pan-active .react-flow__pane {
   cursor: grab !important;
