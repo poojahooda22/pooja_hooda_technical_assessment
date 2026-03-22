@@ -38,10 +38,16 @@ export const SubmitButton = () => {
   const handleSubmit = async (): Promise<void> => {
     setLoading(true);
     try {
+      // Filter out orphaned edges (source/target node no longer exists)
+      const nodeIds = new Set(nodes.map((n) => n.id));
+      const validEdges = edges.filter(
+        (e) => nodeIds.has(e.source) && nodeIds.has(e.target)
+      );
+
       const response = await fetch(`${API_BASE_URL}/pipelines/parse`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nodes, edges }),
+        body: JSON.stringify({ nodes, edges: validEdges }),
       });
 
       if (!response.ok) {
