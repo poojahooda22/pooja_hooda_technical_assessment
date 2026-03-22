@@ -1,6 +1,7 @@
 // store.ts
 
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import {
   addEdge,
   applyNodeChanges,
@@ -15,7 +16,9 @@ import type {
 } from 'reactflow';
 import type { NodeData, StoreState } from './types/store';
 
-export const useStore = create<StoreState>()((set, get) => ({
+export const useStore = create<StoreState>()(
+  persist(
+    (set, get) => ({
   nodes: [],
   edges: [],
   nodeIDs: {},
@@ -83,4 +86,14 @@ export const useStore = create<StoreState>()((set, get) => ({
       isDirty: true,
     });
   },
-}));
+    }),
+    {
+      name: 'pipeline-canvas',
+      partialize: (state) => ({
+        nodes: state.nodes,
+        edges: state.edges,
+        nodeIDs: state.nodeIDs,
+      }),
+    }
+  )
+);
