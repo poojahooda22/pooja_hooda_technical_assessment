@@ -13,6 +13,7 @@ import timerConfig from './configs/timerNode.config';
 import mergeConfig from './configs/mergeNode.config';
 import twitterApiConfig from './configs/twitterApiNode.config';
 import pythonConfig from './configs/pythonNode.config';
+import { dummyConfigs } from './configs/dummyNodes.config';
 
 // All node configurations — add new nodes here
 const allConfigs: NodeConfig[] = [
@@ -27,6 +28,7 @@ const allConfigs: NodeConfig[] = [
   mergeConfig,
   twitterApiConfig,
   pythonConfig,
+  ...dummyConfigs,
 ];
 
 interface BaseNodeWrapperProps {

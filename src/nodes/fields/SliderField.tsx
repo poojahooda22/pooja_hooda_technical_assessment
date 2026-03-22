@@ -24,7 +24,7 @@ export const SliderField: React.FC<SliderFieldProps> = ({ name, label, value, on
       max={max}
       step={step}
     >
-      <SliderPrimitive.Track className="relative grow h-1.5 rounded-xs bg-border-secondary overflow-hidden">
+      <SliderPrimitive.Track className="relative grow h-1.5 rounded-xs overflow-hidden" style={{ backgroundColor: 'var(--rare-gray-iron-100)' }}>
         <SliderPrimitive.Range className="absolute h-full rounded-xs bg-background-brand-solid" />
       </SliderPrimitive.Track>
       <SliderPrimitive.Thumb

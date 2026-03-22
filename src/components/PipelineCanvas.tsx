@@ -178,7 +178,7 @@ export const PipelineCanvas = () => {
         fitView
         className={`bg-background${isSpaceHeld ? ' space-pan-active' : ''}`}
       >
-        <Background color="var(--rare-fg-faint)" gap={gridSize} size={1} />
+        <Background color="var(--rare-fg-faint)" gap={Math.round(20 / 1.618)} size={1.4} />
         <Controls position="bottom-left" />
         <MiniMap
           position="bottom-right"

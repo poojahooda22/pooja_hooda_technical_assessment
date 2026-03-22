@@ -7,9 +7,9 @@ import { shallow } from 'zustand/shallow';
 import * as LucideIcons from 'lucide-react';
 import { useStore } from '../store';
 import { getInitNodeData } from '../nodes/registry';
-import { UNIFIED_NODE_THEME } from '../constants/theme';
+import { CATEGORY_COLORS } from '../constants/categories';
 import { cn } from '../lib/utils';
-import { useTheme } from '../hooks/useTheme';
+
 import type { NodeData, StoreState } from '../types/store';
 
 // Cascade counter — offsets each click-placed node so they don't stack
@@ -29,8 +29,7 @@ interface DraggableNodeProps {
   category: string;
 }
 
-export const DraggableNode = ({ type, label, icon }: DraggableNodeProps) => {
-  const isDark = useTheme();
+export const DraggableNode = ({ type, label, icon, category }: DraggableNodeProps) => {
   const { project } = useReactFlow();
   const { getNodeID, addNode } = useStore(storeSelector, shallow);
   const dragOccurred = useRef(false);
@@ -77,7 +76,7 @@ export const DraggableNode = ({ type, label, icon }: DraggableNodeProps) => {
   const IconComponent = icon
     ? (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[icon]
     : null;
-  const styles = isDark ? UNIFIED_NODE_THEME.toolbarDark : UNIFIED_NODE_THEME.toolbar;
+  const accentColor = CATEGORY_COLORS[category] || '#6b7280';
 
   return (
     <div
@@ -85,14 +84,13 @@ export const DraggableNode = ({ type, label, icon }: DraggableNodeProps) => {
       onDragStart={(event) => onDragStart(event, type)}
       onDragEnd={(event) => ((event.target as HTMLDivElement).style.cursor = 'grab')}
       className={cn(
-        'flex items-center gap-md px-xl py-sm rounded-md border cursor-grab text-[11px] font-medium',
-        'transition-all duration-200 select-none whitespace-nowrap',
-        'hover:scale-[1.02] active:scale-[0.97] motion-reduce:hover:scale-100 motion-reduce:active:scale-100',
-        styles
+        'flex items-center gap-md px-xl py-sm rounded-md border border-secondary cursor-grab text-[11px] font-medium',
+        'transition-all duration-200 select-none whitespace-nowrap bg-transparent text-foreground',
+        'hover:scale-[1.02] hover:bg-background-secondary active:scale-[0.97] motion-reduce:hover:scale-100 motion-reduce:active:scale-100',
       )}
       draggable
     >
-      {IconComponent && <IconComponent size={13} />}
+      {IconComponent && <span style={{ color: accentColor }}><IconComponent size={13} /></span>}
       <span>{label}</span>
     </div>
   );

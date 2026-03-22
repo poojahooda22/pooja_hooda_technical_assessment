@@ -46,8 +46,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({ name, label, value, on
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
-          className="w-full flex items-center justify-between px-xl py-md text-[8px] bg-background-alt
-                     border border-primary rounded-md text-foreground cursor-pointer
+          className="w-full flex items-center justify-between px-xl py-md text-xs leading-none bg-background-alt
+                     border border-secondary rounded-md text-foreground cursor-pointer
                      focus:outline-none focus:border-brand focus:shadow-focus-ring-brand-xs
                      transition-[border-color,box-shadow] duration-200 text-left"
         >
@@ -71,7 +71,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({ name, label, value, on
                   handleSelect(opt.value);
                 }}
                 className={cn(
-                  'px-xl py-md text-[8px] cursor-pointer transition-colors',
+                  'px-xl py-md text-xs leading-none cursor-pointer transition-colors',
                   opt.value === value
                     ? 'bg-background-brand text-foreground-brand font-medium'
                     : 'text-foreground hover:bg-background-secondary-hover'

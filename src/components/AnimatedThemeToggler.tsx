@@ -75,8 +75,8 @@ export const AnimatedThemeToggler = ({
       ref={buttonRef}
       onClick={toggleTheme}
       className={cn(
-        'inline-flex items-center justify-center size-9',
-        'rounded-xl bg-transparent text-foreground-tertiary',
+        'inline-flex items-center justify-center w-10 h-10',
+        'rounded-lg border border-secondary bg-transparent text-foreground-tertiary',
         'hover:bg-background-secondary-hover hover:text-foreground',
         'transition-all duration-200 cursor-pointer',
         'focus-visible:shadow-focus-ring-brand-xs focus-visible:outline-none',

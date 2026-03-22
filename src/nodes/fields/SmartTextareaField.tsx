@@ -133,7 +133,7 @@ export const SmartTextareaField: React.FC<SmartTextareaFieldProps> = ({ name, la
   return (
     <label className="flex flex-col gap-1 relative">
       <span className="text-xxs font-medium text-foreground-secondary">{label}</span>
-      <div className="bg-background-alt border border-primary rounded-md
+      <div className="bg-background-alt border border-secondary rounded-md
                       focus-within:border-brand focus-within:shadow-focus-ring-brand-xs
                       transition-[border-color,box-shadow] duration-200">
         <VariableBadgeBar value={rawValue} onRemove={handleRemoveVar} />
@@ -143,7 +143,7 @@ export const SmartTextareaField: React.FC<SmartTextareaFieldProps> = ({ name, la
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           rows={hasVars ? 3 : 4}
-          className="nodrag nowheel scrollbar-thin w-full px-xl py-md text-[8px] bg-transparent
+          className="nodrag nowheel scrollbar-thin w-full px-xl py-md text-xs bg-transparent
                      text-foreground focus:outline-none
                      resize-none placeholder:text-foreground-placeholder border-none"
           placeholder={hasVars ? '' : 'Enter text or use {{ to reference nodes'}

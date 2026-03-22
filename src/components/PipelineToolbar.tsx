@@ -9,7 +9,7 @@ import { DraggableNode } from './DraggableNode';
 import { AnimatedThemeToggler } from './AnimatedThemeToggler';
 import { nodeConfigs } from '../nodes/registry';
 import { cn } from '../lib/utils';
-import { CATEGORY_ORDER, CATEGORY_LABELS } from '../constants/categories';
+import { CATEGORY_ORDER, CATEGORY_LABELS, CATEGORY_COLORS } from '../constants/categories';
 import type { NodeConfig } from '../types/nodeConfig';
 
 interface GroupedCategory {
@@ -45,10 +45,14 @@ export const PipelineToolbar = () => {
     <div className="bg-background shadow-sm">
       <Tabs type="button-white-border" defaultValue={CATEGORY_ORDER[0]}>
         {/* Tabs row: category triggers + search + theme toggle */}
-        <div className="flex items-center gap-xl px-xl py-xs">
+        <div className="flex items-center gap-sm px-xl py-xs">
           <TabsList className="flex-1 min-w-0">
             {grouped.map((g) => (
               <TabsTrigger key={g.category} value={g.category}>
+                <span
+                  className="inline-block w-1.5 h-1.5 rounded-full shrink-0"
+                  style={{ backgroundColor: CATEGORY_COLORS[g.category] }}
+                />
                 {g.label}
               </TabsTrigger>
             ))}

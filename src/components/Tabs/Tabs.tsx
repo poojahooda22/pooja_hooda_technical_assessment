@@ -110,7 +110,7 @@ const triggerTypeClasses: Record<TabsType, string> = {
     ].join(' '),
 
     'button-white-border': [
-        'h-9 px-xl py-md rounded-sm',
+        'h-7 px-xl py-md rounded-sm',
         'text-fg-muted',
         'hover:text-foreground-secondary',
         'data-[state=active]:text-foreground-secondary',

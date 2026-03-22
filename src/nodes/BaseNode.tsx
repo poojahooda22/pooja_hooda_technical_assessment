@@ -5,6 +5,7 @@ import { FieldRenderer } from './FieldRenderer';
 import { cn } from '../lib/utils';
 import * as LucideIcons from 'lucide-react';
 import { X } from 'lucide-react';
+import { CATEGORY_COLORS } from '../constants/categories';
 import type { NodeConfig, DynamicHandle } from '../types/nodeConfig';
 import type { StoreState } from '../types/store';
 
@@ -147,8 +148,15 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
     >
 
       {/* Header */}
-      <div className="flex items-center gap-md px-xl py-md bg-background-node-header rounded-t-xl">
-        {IconComponent && <IconComponent size={14} className="text-foreground-tertiary" />}
+      <div
+        className="flex items-center gap-md px-xl py-md rounded-t-xl"
+        style={{ backgroundColor: `${CATEGORY_COLORS[config.category] || '#6b7280'}12` }}
+      >
+        {IconComponent && (
+          <span style={{ color: CATEGORY_COLORS[config.category] || '#6b7280' }}>
+            <IconComponent size={14} />
+          </span>
+        )}
         <span className="text-xs font-semibold text-foreground">{config.label}</span>
         <button
           onClick={handleDelete}
