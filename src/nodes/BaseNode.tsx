@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { Handle, Position, useUpdateNodeInternals } from 'reactflow';
+import { motion } from 'framer-motion';
 import { useStore } from '../store';
 import { FieldRenderer } from './FieldRenderer';
 import { cn } from '../lib/utils';
@@ -8,6 +9,10 @@ import { X } from 'lucide-react';
 import { CATEGORY_COLORS } from '../constants/categories';
 import type { NodeConfig, DynamicHandle } from '../types/nodeConfig';
 import type { StoreState } from '../types/store';
+
+// After the first React render cycle, flag flips so only newly added nodes animate
+let initialMountDone = false;
+setTimeout(() => { initialMountDone = true; }, 0);
 
 interface BaseNodeProps {
   config: NodeConfig;
@@ -28,6 +33,9 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
   const updateNodeField = useStore((s) => s.updateNodeField);
   const onNodesChange = useStore((s) => s.onNodesChange);
   const updateNodeInternals = useUpdateNodeInternals();
+
+  // Pop-in animation: only animate nodes added after initial page load
+  const shouldAnimate = useRef(initialMountDone);
 
   // Track which handles have edges connected — for hollow vs filled dot styling
   const connectedHandleIds = useStore(
@@ -132,7 +140,10 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
   };
 
   return (
-    <div
+    <motion.div
+      initial={shouldAnimate.current ? { scale: 0, opacity: 0 } : false}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 32, mass: 0.6 }}
       className={cn(
         'bg-background-alt rounded-xl shadow-md relative group',
         hasLeftDynamicHandles ? 'w-[320px]' : 'w-[240px]',
@@ -233,7 +244,7 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
           </React.Fragment>
         );
       })}
-    </div>
+    </motion.div>
   );
 });
 
