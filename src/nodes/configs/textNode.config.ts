@@ -1,8 +1,8 @@
 import type { NodeConfig } from '../../types/nodeConfig';
 import { extractVariables } from '../../utils/templateParser';
 
-const HANDLE_TOP_OFFSET = 40;
-const HANDLE_SPACING = 28;
+const HANDLE_TOP_OFFSET = 50;
+const HANDLE_SPACING = 32;
 
 const config: NodeConfig = {
   type: 'text',

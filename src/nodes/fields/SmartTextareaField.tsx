@@ -34,8 +34,8 @@ const combineValue = (vars: string[], freeText: string): string => {
   return parts.join(' ').trim();
 };
 
-const MIN_HEIGHT = 40;
-const MAX_HEIGHT = 140;
+const MIN_HEIGHT = 60;
+const MAX_HEIGHT = 200;
 
 export const SmartTextareaField: React.FC<SmartTextareaFieldProps> = ({ name, label, value, onChange, nodeId }) => {
   const [vars, setVars] = useState<string[]>(() => splitValue(value || '').vars);
@@ -142,7 +142,7 @@ export const SmartTextareaField: React.FC<SmartTextareaFieldProps> = ({ name, la
           value={freeText}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          rows={hasVars ? 1 : 2}
+          rows={hasVars ? 3 : 4}
           className="nodrag nowheel scrollbar-thin w-full px-xl py-md text-[8px] bg-transparent
                      text-foreground focus:outline-none
                      resize-none placeholder:text-foreground-placeholder border-none"

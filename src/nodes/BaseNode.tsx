@@ -123,17 +123,23 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
     ('style' in h && (h as { style?: React.CSSProperties }).style?.top) || ('top' in h && typeof (h as DynamicHandle).top === 'number')
   );
   const needsExtraHeight = positionedHandles.length > 1;
+  const hasLeftDynamicHandles = dynamicHandles.some(h => h.position === 'left');
+  const lastDynamicTop = dynamicHandles.length > 0 ? Math.max(...dynamicHandles.map(h => h.top)) : 0;
+  const computedMinHeight = (needsExtraHeight || lastDynamicTop > 0)
+    ? Math.max(140, lastDynamicTop + 40)
+    : undefined;
 
   return (
     <div
       className={cn(
-        'bg-background rounded-xl border-l-2 shadow-xs min-w-[240px] relative',
+        'bg-background rounded-xl border-l-2 shadow-xs relative',
+        hasLeftDynamicHandles ? 'w-[320px]' : 'w-[240px]',
         'transition-[shadow,border-color] duration-200 hover:shadow-sm',
         selected ? 'shadow-focus-ring-brand border border-l-2' : 'border border-secondary border-l-2'
       )}
       style={{
         borderLeftColor: category.accent,
-        ...(needsExtraHeight ? { minHeight: '140px' } : {}),
+        ...(computedMinHeight ? { minHeight: `${computedMinHeight}px` } : {}),
       }}
     >
 
@@ -147,7 +153,7 @@ const BaseNode = memo(({ config, id, data, selected }: BaseNodeProps) => {
       </div>
 
       {/* Body */}
-      <div className="px-3 py-3 flex flex-col gap-3">
+      <div className={cn("py-3 pr-3 flex flex-col gap-3", hasLeftDynamicHandles ? "pl-[70px]" : "pl-3")}>
         {config.fields?.map((field) => (
           <FieldRenderer
             key={field.name}
