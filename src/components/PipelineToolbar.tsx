@@ -62,7 +62,7 @@ export const PipelineToolbar = () => {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search Nodes"
                 className={cn(
-                  'h-7 pl-7xl pr-xl text-[10px] font-medium rounded-md border border-secondary bg-background-secondary',
+                  'h-7 pl-7xl pr-xl text-[11px] font-medium rounded-md border border-secondary bg-background-secondary',
                   'placeholder:text-foreground-placeholder',
                   'focus:shadow-focus-ring-brand-xs focus:outline-none focus:border-brand',
                   'transition-all duration-200 w-[150px] focus:w-[180px]'

@@ -159,7 +159,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
                 value={value}
                 className={cn(
                     'relative inline-flex items-center justify-center',
-                    'whitespace-nowrap font-medium text-[10px]',
+                    'whitespace-nowrap font-medium text-xs',
                     'transition-colors duration-200',
                     'focus-visible:outline-none cursor-pointer select-none',
                     'disabled:pointer-events-none disabled:opacity-50',

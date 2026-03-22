@@ -85,7 +85,7 @@ export const DraggableNode = ({ type, label, icon }: DraggableNodeProps) => {
       onDragStart={(event) => onDragStart(event, type)}
       onDragEnd={(event) => ((event.target as HTMLDivElement).style.cursor = 'grab')}
       className={cn(
-        'flex items-center gap-md px-xl py-sm rounded-md border cursor-grab text-[10px] font-medium',
+        'flex items-center gap-md px-xl py-sm rounded-md border cursor-grab text-[11px] font-medium',
         'transition-all duration-200 select-none whitespace-nowrap',
         'hover:scale-[1.02] active:scale-[0.97] motion-reduce:hover:scale-100 motion-reduce:active:scale-100',
         styles
