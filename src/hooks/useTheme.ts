@@ -4,7 +4,12 @@
 import { useState, useEffect } from 'react';
 
 export const useTheme = (): boolean => {
-  const [isDark, setIsDark] = useState<boolean>(false);
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.getAttribute('data-theme') === 'dark' || localStorage.getItem('theme') === 'dark';
+    }
+    return false;
+  });
 
   useEffect(() => {
     const check = (): void => setIsDark(document.documentElement.getAttribute('data-theme') === 'dark');
